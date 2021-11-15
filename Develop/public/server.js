@@ -32,7 +32,16 @@ app.get('api/notes', function(req, res) {
 //Routing API : POST request
 
 app.post('api/notes', function(req, res) {
-    
+    const note = req.body;
+    readFileAsync('./develop/db/db.json', 'utf-8').then(function(data) {
+        const notes = [].concat(JSON.parse(data));
+        note.id = notes.length + 1
+        notes.push(note);
+        return notes
+    }).then(function(notes) {
+        fs.writeFileAsync('./develop/db/db.json', JSON.stringify(notes))
+        res.json(notes);
+    })
 });
 
 //Routing API : DELETE request
