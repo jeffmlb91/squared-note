@@ -18,17 +18,21 @@ app.use(express.json());
 
 // adding the static Middleware
 
-app.use(express.static("public"));
+app.use(express.static("../develop/public"));
 
 //Routing API : GET request
 app.get('api/notes', function(req, res) {
-
+    //console.log(`Hello I am listening on ${PORT}`)
+    readFileAsync('../develop/db/db.json', "utf-8").then(function(data) {
+        notes = [].concat(JSON.parse(data))
+        res.json(notes);
+    })
 });
 
 //Routing API : POST request
 
 app.post('api/notes', function(req, res) {
-
+    
 });
 
 //Routing API : DELETE request
