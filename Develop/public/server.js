@@ -16,3 +16,6 @@ const PORT = 3001;
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
+// adding the static Middleware
+
+app.use(express.static("public"));
