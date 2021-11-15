@@ -47,5 +47,36 @@ app.post('api/notes', function(req, res) {
 //Routing API : DELETE request
 
 app.delete('api/notes', function(req, res) {
+    const idToDelete = parseInt(req.params.id);
+    readFileAsync("./develop/db/db.json", "utf8").then(function(data) {
+      const notes = [].concat(JSON.parse(data));
+      const newNotesData = []
+      for (let i = 0; i<notes.length; i++) {
+        if(idToDelete !== notes[i].id) {
+          newNotesData.push(notes[i])
+        }
+      }
+      return newNotesData
+    }).then(function(notes) {
+      writeFileAsync("./develop/db/db.json", JSON.stringify(notes))
+      res.send('saved success!!!');
+    })
+});
 
+app.get("/notes", function(req, res) {
+    res.sendFile(path.join(__dirname, "./develop/public/notes.html"));
+});
+  
+app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
+});
+  
+app.get("*", function(req, res) {
+    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
+});
+  
+  
+  
+app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
 });
